@@ -1,4 +1,4 @@
-from card_consts import Suite, SuiteProperties
+from card_consts import Suite, SuiteProperties, FaceCards
 from termcolor import colored
 
 
@@ -14,7 +14,9 @@ class Card:
         colour = SuiteProperties[self.suite]["colour"]
         self.colour = colour
         if face == "":
-            self.face = str(rank)
+            if rank in FaceCards:
+                self.face = FaceCards[rank]
+            else: self.face = str(rank)
         else:
             self.face = face
 
@@ -22,3 +24,31 @@ class Card:
         return colored(
             f"{self.face}{SuiteProperties[self.suite]['symbol']}", self.colour  # pyright: ignore[reportArgumentType]
         )
+
+    def __eq__(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self.rank == other.rank
+
+    def __le__(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self.rank <= other.rank
+
+    def __lt__(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self.rank < other.rank
+
+    def __ge__(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self.rank >= other.rank
+
+    def __gt__(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self.rank > other.rank
+
+    def get_suite(self):
+        return self.suite.value

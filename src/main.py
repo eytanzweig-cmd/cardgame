@@ -1,12 +1,14 @@
+from card_consts import Suite
 from cards import Card
-from termcolor import colored
 
 
 def main():
-    testcard = Card(1, "green", "A")
-    newcard = Card(2, "red")
+    card_deck = [Card(1, Suite.CLUB, "A"), Card(2, Suite.HEART), Card(11, Suite.DIAMOND, "J")]
 
-    print(f"{testcard}, {newcard}")
+    print(f"{card_deck}")
+
+    for card in card_deck:
+        print(f"{card}")
 
 
 if __name__ == "__main__":

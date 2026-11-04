@@ -1,23 +1,24 @@
+from card_consts import Suite, SuiteProperties
 from termcolor import colored
-from termcolor._types import Color
 
 
 class Card:
-    value: int
-    colour: Color
+    rank: int
+    suite: Suite
+    colour: str
     face: str
 
-    def __init__(self, value: int, colour: Color, face: str = "") -> None:
-        self.value = value
+    def __init__(self, rank: int, suite: Suite, face: str = "") -> None:
+        self.rank = rank
+        self.suite = suite
+        colour = SuiteProperties[self.suite]["colour"]
         self.colour = colour
         if face == "":
-            self.face = str(value)
+            self.face = str(rank)
         else:
             self.face = face
 
-    def __str__(self) -> str:
-        return colored(f"{self.face}", self.colour)
-
-
-class Deck:
-    cards: list[Card]
+    def __repr__(self) -> str:
+        return colored(
+            f"{self.face}{SuiteProperties[self.suite]['symbol']}", self.colour  # pyright: ignore[reportArgumentType]
+        )

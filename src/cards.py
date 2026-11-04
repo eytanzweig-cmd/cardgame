@@ -1,4 +1,4 @@
-from card_consts import Suite, SuiteProperties, FaceCards
+from card_consts import FaceCards, Suite, SuiteProperties
 from termcolor import colored
 
 
@@ -16,13 +16,15 @@ class Card:
         if face == "":
             if rank in FaceCards:
                 self.face = FaceCards[rank]
-            else: self.face = str(rank)
+            else:
+                self.face = str(rank)
         else:
             self.face = face
 
     def __repr__(self) -> str:
         return colored(
-            f"{self.face}{SuiteProperties[self.suite]['symbol']}", self.colour  # pyright: ignore[reportArgumentType]
+            f"{self.face}{SuiteProperties[self.suite]['symbol']}",
+            self.colour,  # pyright: ignore[reportArgumentType]
         )
 
     def __eq__(self, other):
@@ -52,3 +54,6 @@ class Card:
 
     def get_suite(self):
         return self.suite.value
+
+    def get_value(self):
+        return self.rank

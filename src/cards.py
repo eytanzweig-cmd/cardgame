@@ -58,9 +58,14 @@ class Card:
     def get_value(self):
         return self.rank
 
+    def exact_match(self, other):
+        if not isinstance(other, Card):
+            raise TypeError("cannot compare cards to non-cards")
+        return self == other and other.face == self.face and other.get_suite() == self.get_suite()
+
     def find_in_deck(self, deck, exact = False) -> int:
         counter = 0
         for c in deck:
-            if c == self and ((not exact) or (c.get_suite() == self.get_suite())):
+            if (not exact and c == self) or (self.exact_match(c)):
                 counter += 1
         return counter

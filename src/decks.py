@@ -38,6 +38,14 @@ class Deck(list):
         temp.sort(key=(lambda x:x.get_suite())) #Then suite
         return temp
 
+    def deal(self, other, count = 1):
+        if not isinstance(other, type(self)):
+            raise TypeError("can only deal to another deck!")
+        while count > 0:
+            other.insert(0,self.pop(0))
+            count -= 1
+
+
 def full_deck() -> Deck:
     new_deck = Deck([])
 

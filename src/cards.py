@@ -57,3 +57,10 @@ class Card:
 
     def get_value(self):
         return self.rank
+
+    def find_in_deck(self, deck, exact = False) -> int:
+        counter = 0
+        for c in deck:
+            if c == self and ((not exact) or (c.get_suite() == self.get_suite())):
+                counter += 1
+        return counter

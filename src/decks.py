@@ -1,10 +1,13 @@
 import random
 
-from cards import Card, Suite
+from card_consts import Suite
+from cards import Card
 
 
 class Deck(list):
-    def __init__(self, iterable):
+    def __init__(self, iterable=None):
+        if iterable == None:
+            iterable = []
         super().__init__(self._validate_card(item) for item in iterable)
 
     def __setitem__(self, index, item):
@@ -34,23 +37,23 @@ class Deck(list):
         return Deck(sorted(self))
 
     def sort_suite_rank(self):
-        temp = sorted(self) #Sort by rank
-        temp.sort(key=(lambda x:x.get_suite())) #Then suite
+        temp = sorted(self)  # Sort by rank
+        temp.sort(key=(lambda x: x.get_suite()))  # Then suite
         return temp
 
-    def deal(self, other, count = 1):
+    def deal(self, other, count=1):
         if not isinstance(other, type(self)):
             raise TypeError("can only deal to another deck!")
         while count > 0:
-            other.insert(0,self.pop(0))
+            other.insert(0, self.pop(0))
             count -= 1
 
 
-def full_deck() -> Deck:
+def full_standard_deck() -> Deck:
     new_deck = Deck([])
 
     for i in range(4):
         for j in range(13):
-            new_deck.append(Card(j+1,Suite(i)))
+            new_deck.append(Card(j + 1, Suite(i)))
 
     return new_deck

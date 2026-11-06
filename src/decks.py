@@ -54,24 +54,36 @@ class Deck(list):
         for i in range(len(self)):
             self[i].flip()
 
-    def sort_rank(self):
+    def sort_rank(self) -> "Deck":
         return Deck(sorted(self))
 
-    def sort_suite_rank(self):
+    def sort_rank_suite(self) -> "Deck":
+        temp = self.copy()
+        temp.sort(key=(lambda x: x.get_suite()))  # Then suite
+        temp = sorted(temp)  # Sort by rank
+        return Deck(temp)
+
+    def sort_suite_rank(self) -> "Deck":
         temp = sorted(self)  # Sort by rank
         temp.sort(key=(lambda x: x.get_suite()))  # Then suite
-        return temp
+        return Deck(temp)
 
     def deal(self, other, count=1):
-        if not isinstance(other, type(self)):
-            raise TypeError("can only deal to another deck!")
+        if count > len(self):
+            raise ValueError(f"cannot deal {count} cards from a {len(self)} card deck")
+        if isinstance (other, type(self)):
+            target = other
+        elif isinstance (other.hand, type(self)):
+            target = other.hand
+        else :
+            raise TypeError("can only deal to a player or another deck!")
         while count > 0:
-            other.insert(0, self.pop(0))
+            target.insert(0, self.pop(0))
             count -= 1
 
 
 def full_standard_deck() -> Deck:
-    new_deck = Deck([])
+    new_deck = Deck()
 
     for i in range(4):
         for j in range(13):

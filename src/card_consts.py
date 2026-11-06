@@ -1,5 +1,6 @@
 from enum import Enum
 
+FACEDOWN = "??"
 
 class Suite(Enum):
     CLUB = 0
@@ -8,8 +9,8 @@ class Suite(Enum):
     SPADE = 3
 
 SuiteProperties = {
-    Suite.CLUB: {"colour": "black", "symbol": "\u2663"},
-    Suite.SPADE: {"colour": "black", "symbol": "\u2660"},
+    Suite.CLUB: {"colour": "blue", "symbol": "\u2663"},
+    Suite.SPADE: {"colour": "blue", "symbol": "\u2660"},
     Suite.DIAMOND: {"colour": "red", "symbol": "\u2666"},
     Suite.HEART: {"colour": "red", "symbol": "\u2665"},
 }

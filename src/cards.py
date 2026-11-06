@@ -1,4 +1,4 @@
-from card_consts import FaceCards, Suite, SuiteProperties
+from card_consts import FACEDOWN, FaceCards, Suite, SuiteProperties
 from termcolor import colored
 
 
@@ -7,6 +7,7 @@ class Card:
     suite: Suite
     colour: str
     face: str
+    face_up: bool
 
     def __init__(self, rank: int, suite: Suite, face: str = "") -> None:
         self.rank = rank
@@ -20,12 +21,18 @@ class Card:
                 self.face = str(rank)
         else:
             self.face = face
+        self.face_up = True
+
+    def __str__(self) -> str:
+        output = f"{self.face}{SuiteProperties[self.suite]['symbol']}"
+        if self.face_up:
+            output = colored(output, self.colour)  # pyright: ignore[reportArgumentType]
+        else:
+            output = FACEDOWN
+        return output
 
     def __repr__(self) -> str:
-        return colored(
-            f"{self.face}{SuiteProperties[self.suite]['symbol']}",
-            self.colour,  # pyright: ignore[reportArgumentType]
-        )
+        return f"{self.face}{SuiteProperties[self.suite]['symbol']}"
 
     def __eq__(self, other):
         if not isinstance(other, Card):
@@ -57,6 +64,9 @@ class Card:
 
     def get_value(self):
         return self.rank
+
+    def flip(self):
+        self.face_up = not self.face_up
 
     def exact_match(self, other):
         if not isinstance(other, Card):

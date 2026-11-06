@@ -1,15 +1,13 @@
-from cards import Card, Suite
-from decks import Deck
+from decks import full_standard_deck
 
 
 def main():
-    aceofclubs = Card(1,Suite.CLUB)
-    oneofclubs = Card(1,Suite.CLUB, "1")
-    aceofspades = Card(1,Suite.SPADE)
-    acedeck = Deck([aceofclubs, oneofclubs, aceofclubs, aceofspades])
-    print(acedeck)
-    print(aceofclubs.find_in_deck(acedeck))
-    print(aceofclubs.find_in_deck(acedeck, True))
+    newdeck = full_standard_deck()
+    newdeck.face_down()
+    newdeck.shuffle()
+    print(newdeck.peek(3))
+    print(newdeck)
+
 
 if __name__ == "__main__":
     main()

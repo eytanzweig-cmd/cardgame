@@ -1,3 +1,4 @@
+import copy
 import random
 
 from card_consts import Suite
@@ -12,6 +13,14 @@ class Deck(list):
 
     def __setitem__(self, index, item):
         super().__setitem__(index, self._validate_card(item))
+
+    def __str__(self):
+        return ", ".join(map(str, self))
+
+    def peek(self, amount=1):
+        temp_deck = copy.deepcopy(Deck(self[0:amount]))
+        temp_deck.face_up()
+        return str(temp_deck)
 
     def insert(self, index, item):
         super().insert(index, self._validate_card(item))
@@ -32,6 +41,18 @@ class Deck(list):
 
     def shuffle(self):
         random.shuffle(self)
+
+    def face_down(self):
+        for i in range(len(self)):
+            self[i].face_up = False
+
+    def face_up(self):
+        for i in range(len(self)):
+            self[i].face_up = True
+
+    def flip(self):
+        for i in range(len(self)):
+            self[i].flip()
 
     def sort_rank(self):
         return Deck(sorted(self))

@@ -1,5 +1,5 @@
 from card_consts import Suite
-from cardgame_types import Card, Deck
+from types_cardgame import Card, Deck
 
 
 def full_standard_deck() -> Deck:

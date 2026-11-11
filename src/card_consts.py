@@ -8,6 +8,10 @@ class Suite(Enum):
     HEART = 2
     SPADE = 3
 
+class PlayerType(Enum):
+    HUMAN = 0
+    RANDOM = 1
+
 SuiteProperties = {
     Suite.CLUB: {"colour": "blue", "symbol": "\u2663"},
     Suite.SPADE: {"colour": "blue", "symbol": "\u2660"},

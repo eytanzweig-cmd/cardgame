@@ -1,7 +1,7 @@
 import copy
 import random
 
-from card_consts import FACEDOWN, FaceCards, Suite, SuiteProperties
+from card_consts import FACEDOWN, FaceCards, PlayerType, Suite, SuiteProperties
 from termcolor import colored
 
 
@@ -74,9 +74,13 @@ class Card:
     def exact_match(self, other):
         if not isinstance(other, Card):
             raise TypeError("cannot compare cards to non-cards")
-        return self == other and other.face == self.face and other.get_suite() == self.get_suite()
+        return (
+            self == other
+            and other.face == self.face
+            and other.get_suite() == self.get_suite()
+        )
 
-    def find_in_deck(self, deck, exact = False) -> int:
+    def find_in_deck(self, deck, exact=False) -> int:
         counter = 0
         for c in deck:
             if (not exact and c == self) or (self.exact_match(c)):
@@ -94,6 +98,8 @@ class Deck(list):
         super().__setitem__(index, self._validate_card(item))
 
     def __str__(self):
+        if len(self) <=0:
+            return "empty"
         return ", ".join(map(str, self))
 
     def peek(self, amount=1):
@@ -120,6 +126,9 @@ class Deck(list):
 
     def shuffle(self):
         random.shuffle(self)
+
+    def pull_random(self):
+        return random.randrange(0,len(self))
 
     def face_down(self):
         for i in range(len(self)):
@@ -150,28 +159,34 @@ class Deck(list):
     def deal(self, other, count=1):
         if count > len(self):
             raise ValueError(f"cannot deal {count} cards from a {len(self)} card deck")
-        if isinstance (other, type(self)):
+        if isinstance(other, type(self)):
             target = other
-        elif isinstance (other.hand, type(self)):
+        elif isinstance(other.hand, type(self)):
             target = other.hand
-        else :
+        else:
             raise TypeError("can only deal to a player or another deck!")
         while count > 0:
             target.insert(0, self.pop(0))
             count -= 1
 
+
 class Player:
     hand: Deck
     name: str
     score: int
+    type: PlayerType
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, type = PlayerType.HUMAN) -> None:
         self.name = name
         self.score = 0
         self.hand = Deck()
+        self.type = type
 
     def __str__(self) -> str:
         return f"Name: {self.name} Score: {self.score} Hand: {self.hand}"
+
+    def get_card_count(self) -> int:
+        return len(self.hand)
 
     def sort_hand(self):
         self.hand = self.hand.sort_rank_suite()

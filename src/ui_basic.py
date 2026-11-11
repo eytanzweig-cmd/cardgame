@@ -1,6 +1,6 @@
 def print_card_sequence(deck):
     for counter, card in enumerate(deck):
-        print(f"{counter}. {card}")
+        print(f"{counter+1}. {card}")
 
 
 def hand_menu(player):
@@ -10,7 +10,7 @@ def hand_menu(player):
     counter = len(player.hand)
     print_card_sequence(player.hand)
     valid = False
-    index = -1
+    index = 0
     while valid == False:
         response = input("Pick a card>")
         try:

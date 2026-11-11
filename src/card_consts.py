@@ -11,6 +11,8 @@ class Suite(Enum):
 class PlayerType(Enum):
     HUMAN = 0
     RANDOM = 1
+    HIGHEST = 2
+    LOWEST = 3
 
 SuiteProperties = {
     Suite.CLUB: {"colour": "blue", "symbol": "\u2663"},

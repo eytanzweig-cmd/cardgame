@@ -18,7 +18,7 @@ def hand_menu(player):
         except ValueError:
             print("Invalid response!")
             continue
-        if index <= 0 or index >= counter:
+        if index <= 0 or index > counter:
             print("Invalid response!")
             continue
         valid = True

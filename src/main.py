@@ -10,17 +10,17 @@ def select_card(deck: Deck, idx: int) -> Card:
 def make_move(player: Player):
     match player.type:
         case PlayerType.HUMAN:
-            i = hand_menu(player)
+            idx = hand_menu(player)
         case PlayerType.RANDOM:
-            i = player.hand.pull_random()
+            idx = player.hand.pull_random()
         case PlayerType.HIGHEST:
-            i = player.hand.index(max(player.hand))
+            idx = player.hand.index(max(player.hand))
         case PlayerType.LOWEST:
-            i = player.hand.index(min(player.hand))
+            idx = player.hand.index(min(player.hand))
         case _:
             raise ValueError("Unknown player type!")
 
-    card = select_card(player.hand, i)
+    card = select_card(player.hand, idx)
     return card
 
 def main():
@@ -39,7 +39,7 @@ def main():
             player1.score += 1
         if (p2card > p1card):
             player2.score += 1
-        print (f"{player1.name}: {p1card} v. {player2.name}: {p2card}")
+        print (f"{player1.name}: {p1card} vs. {player2.name}: {p2card}")
     print(player1)
     print(player2)
 

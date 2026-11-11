@@ -2,17 +2,17 @@ from enum import Enum
 
 FACEDOWN = "??"
 
-class Suite(Enum):
-    CLUB = 0
-    DIAMOND = 1
-    HEART = 2
-    SPADE = 3
-
 class PlayerType(Enum):
     HUMAN = 0
     RANDOM = 1
     HIGHEST = 2
     LOWEST = 3
+
+class Suite(Enum):
+    CLUB = 0
+    DIAMOND = 1
+    HEART = 2
+    SPADE = 3
 
 SuiteProperties = {
     Suite.CLUB: {"colour": "blue", "symbol": "\u2663"},

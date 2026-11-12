@@ -1,6 +1,6 @@
 import random
 
-from card_consts import PlayerType
+from card_consts import MAX_VALUE, PlayerType
 from decks import full_standard_deck, select_card
 from types_cardgame import Player
 from ui_basic import hand_menu, hilo_bet_menu
@@ -10,28 +10,32 @@ from ui_basic import hand_menu, hilo_bet_menu
 TURN_AMOUNT = 5
 
 
+def set_bet_by_value(value) -> bool:
+    if value <= (MAX_VALUE // 2):
+        return False  # bet low
+    elif value > ((MAX_VALUE+1) // 2):
+        return True  # bet high
+    else:
+        return bool(random.getrandbits(1))  # If we're exactly halfway, bet randomly
+
+
+# Make a move based on playertype
 def make_move(player: Player):
     match player.type:
         case PlayerType.HUMAN:
             card = select_card(player.hand, hand_menu(player))
             bet = hilo_bet_menu()
-            return card, bet
         case PlayerType.RANDOM:
-            idx = player.hand.pull_random()
+            card = select_card(player.hand, player.hand.pull_random())
+            bet = set_bet_by_value(card.get_value())
         case PlayerType.HIGHEST:
-            idx = player.hand.index(max(player.hand))
+            card = select_card(player.hand, player.hand.index(max(player.hand)))
+            bet = set_bet_by_value(card.get_value())
         case PlayerType.LOWEST:
-            idx = player.hand.index(min(player.hand))
+            card = select_card(player.hand, player.hand.index(max(player.hand)))
+            bet = set_bet_by_value(card.get_value())
         case _:
             raise ValueError("Unknown player type!")
-    card = select_card(player.hand, idx)
-    if card.get_value() <= 6:
-        bet = False # bet low
-    elif card.get_value() >= 8:
-        bet = True # bet high
-    else:
-        bet = bool(random.getrandbits(1))
-
     return card, bet
 
 
@@ -73,8 +77,8 @@ def dealer_hilo(P1Type, P2Type, verbose: bool = True):
         move_count += 1
         if verbose:
             print(
-            f"{move_count}: Dealer: {dealer_card}, {player1.name}: {p1card}, bet {'high' if p1bet else 'low'}, {player2.name}: {p2card}, bet {'high' if p2bet else 'low'} - {wintext}"
-        )
+                f"{move_count}: Dealer: {dealer_card}, {player1.name}: {p1card}, bet {'high' if p1bet else 'low'}, {player2.name}: {p2card}, bet {'high' if p2bet else 'low'} - {wintext}"
+            )
     print(f"{player1.name} - final score: {player1.score}")
     print(f"{player2.name} - final score: {player2.score}")
 

@@ -1,6 +1,7 @@
 from enum import Enum
 
 FACEDOWN = "??"
+MAX_VALUE = 13
 
 class PlayerType(Enum):
     HUMAN = 0

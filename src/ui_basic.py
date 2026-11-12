@@ -3,6 +3,7 @@ def print_card_sequence(deck):
         print(f"{counter+1}. {card}")
 
 
+
 def hand_menu(player):
     if len(player.hand) == 0:
         print ("No cards to pick from!")
@@ -23,3 +24,15 @@ def hand_menu(player):
             continue
         valid = True
     return index-1
+
+
+def hilo_bet_menu():
+    valid = False
+    response = ""
+    while valid == False:
+        response = input("Bet (h)igh or (l)ow>")
+        if response.lower() != "h" and response.lower() != "l":
+            print("Invalid response!")
+            continue
+        valid = True
+    return response.lower() == "h"

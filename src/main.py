@@ -1,9 +1,9 @@
-from types_cardgame import PlayerType
 from hilo_game import dealer_hilo
+from types_cardgame import PlayerType
 
 
 def main():
-    dealer_hilo(PlayerType.RANDOM, PlayerType.RANDOM, True)
+    dealer_hilo(PlayerType.HUMAN, PlayerType.RANDOM, True)
 
 
 if __name__ == "__main__":

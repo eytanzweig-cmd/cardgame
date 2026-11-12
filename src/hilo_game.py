@@ -3,7 +3,7 @@ import random
 from card_consts import PlayerType
 from decks import full_standard_deck, select_card
 from types_cardgame import Player
-from ui_basic import hand_menu
+from ui_basic import hand_menu, hilo_bet_menu
 
 # Constants for hi-low vs. dealer
 
@@ -13,7 +13,9 @@ TURN_AMOUNT = 5
 def make_move(player: Player):
     match player.type:
         case PlayerType.HUMAN:
-            idx = hand_menu(player)
+            card = select_card(player.hand, hand_menu(player))
+            bet = hilo_bet_menu()
+            return card, bet
         case PlayerType.RANDOM:
             idx = player.hand.pull_random()
         case PlayerType.HIGHEST:

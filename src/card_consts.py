@@ -2,10 +2,6 @@ from enum import Enum
 
 FACEDOWN = "??"
 
-# Constants for hi-low vs. dealer
-
-TURN_AMOUNT = 5
-
 class PlayerType(Enum):
     HUMAN = 0
     RANDOM = 1

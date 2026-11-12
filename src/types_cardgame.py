@@ -127,7 +127,7 @@ class Deck(list):
     def shuffle(self):
         random.shuffle(self)
 
-    def pull_random(self):
+    def pull_random(self) -> int:
         return random.randrange(0,len(self))
 
     def face_down(self):

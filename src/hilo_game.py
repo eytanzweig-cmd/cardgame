@@ -79,15 +79,19 @@ def dealer_hilo(P1Type, P2Type, verbose: bool = True):
             print(
                 f"{move_count}: Dealer: {dealer_card}, {player1.name}: {p1card}, bet {'high' if p1bet else 'low'}, {player2.name}: {p2card}, bet {'high' if p2bet else 'low'} - {wintext}"
             )
-    print(f"{player1.name} - final score: {player1.score}")
-    print(f"{player2.name} - final score: {player2.score}")
+    if verbose:
+        print(f"{player1.name} - final score: {player1.score}")
+        print(f"{player2.name} - final score: {player2.score}")
 
     if player1.score > player2.score:
-        print(f"{player1.name} wins!")
+        if verbose:
+            print(f"{player1.name} wins!")
         return 1
     elif player2.score > player1.score:
-        print(f"{player2.name} wins!")
+        if verbose:
+            print(f"{player2.name} wins!")
         return 2
     else:
-        print("Tie!")
+        if verbose:
+            print("Tie!")
         return 0

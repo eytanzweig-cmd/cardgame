@@ -102,6 +102,9 @@ class Deck(list):
             return "empty"
         return ", ".join(map(str, self))
 
+    def __sub__(self, other): #Deck subtraction
+        return Deck(filter(lambda x: x not in other, self))
+
     def peek(self, amount=1):
         temp_deck = copy.deepcopy(Deck(self[0:amount]))
         temp_deck.face_up()

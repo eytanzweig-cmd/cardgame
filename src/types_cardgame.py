@@ -188,18 +188,26 @@ class Deck(list):
             target.insert(0, self.pop(0))
             count -= 1
 
+    def get_average_value(self):
+        value_list = [card.get_value() for card in self]
+        value_sum = sum(value_list)
+        return value_sum/len(self)
+
+
 
 class Player:
     hand: Deck
     name: str
     score: int
     type: PlayerType
+    seen: Deck
 
     def __init__(self, name: str, type = PlayerType.HUMAN) -> None:
         self.name = name
         self.score = 0
         self.hand = Deck()
         self.type = type
+        self.seen = Deck()
 
     def __str__(self) -> str:
         return f"Name: {self.name} Score: {self.score} Hand: {self.hand}"

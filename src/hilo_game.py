@@ -10,17 +10,16 @@ from ui_basic import hand_menu, hilo_bet_menu
 TURN_AMOUNT = 5
 
 
-def set_bet_by_value(value) -> bool:
-    if value <= (MAX_VALUE // 2):
-        return False  # bet low
-    elif value > ((MAX_VALUE+1) // 2):
-        return True  # bet high
-    else:
+def set_bet_by_value(value, midpoint: float = (MAX_VALUE+1)/2) -> bool:
+    if float(value) == midpoint:
         return bool(random.getrandbits(1))  # If we're exactly halfway, bet randomly
+    else:
+        return value > midpoint
 
 
 # Make a move based on playertype
 def make_move(player: Player):
+    #avg_value = full_standard_deck().get_average_value()
     match player.type:
         case PlayerType.HUMAN:
             card = select_card(player.hand, hand_menu(player))
@@ -32,7 +31,10 @@ def make_move(player: Player):
             card = select_card(player.hand, player.hand.index(max(player.hand)))
             bet = set_bet_by_value(card.get_value())
         case PlayerType.LOWEST:
-            card = select_card(player.hand, player.hand.index(max(player.hand)))
+            card = select_card(player.hand, player.hand.index(min(player.hand)))
+            bet = set_bet_by_value(card.get_value())
+        case PlayerType.COUNTER:
+            card = select_card(player.hand, player.hand.pull_random())
             bet = set_bet_by_value(card.get_value())
         case _:
             raise ValueError("Unknown player type!")

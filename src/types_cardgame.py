@@ -176,7 +176,6 @@ class Deck(list):
         return Deck(temp)
 
     def deal(self, other: "Deck | Player", count=1):
-        has_memory = False
         if count > len(self):
             raise ValueError(f"cannot deal {count} cards from a {len(self)} card deck")
         if isinstance(other, type(self)):

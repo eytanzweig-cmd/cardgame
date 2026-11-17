@@ -1,7 +1,5 @@
-from card_consts import Suite
-from decks import full_standard_deck
-from hilo_game import dealer_hilo, set_bet_by_value
-from types_cardgame import Card, Deck, PlayerType
+from hilo_game import dealer_hilo
+from types_cardgame import PlayerType
 
 
 def run_n(n):

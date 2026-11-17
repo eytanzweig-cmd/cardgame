@@ -2,7 +2,7 @@ import random
 
 from card_consts import MAX_VALUE, PlayerType
 from decks import full_standard_deck, select_card
-from types_cardgame import Deck, Player
+from types_cardgame import Player
 from ui_basic import hand_menu, hilo_bet_menu
 
 # Constants for hi-low vs. dealer

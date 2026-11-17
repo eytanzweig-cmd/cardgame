@@ -175,17 +175,21 @@ class Deck(list):
         temp.sort(key=(lambda x: x.get_suite()))  # Then suite
         return Deck(temp)
 
-    def deal(self, other, count=1):
+    def deal(self, other: "Deck | Player", count=1):
+        has_memory = False
         if count > len(self):
             raise ValueError(f"cannot deal {count} cards from a {len(self)} card deck")
         if isinstance(other, type(self)):
             target = other
-        elif isinstance(other.hand, type(self)):
+        elif isinstance(other, Player):
             target = other.hand
         else:
             raise TypeError("can only deal to a player or another deck!")
         while count > 0:
-            target.insert(0, self.pop(0))
+            card = self.pop(0)
+            target.insert(0, card)
+            if isinstance(other, Player):
+                other.seen.insert(0, card)
             count -= 1
 
     def get_average_value(self):

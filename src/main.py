@@ -7,7 +7,7 @@ from types_cardgame import Card, Deck, PlayerType
 def run_n(n):
     win_count = {0: 0, 1: 0, 2: 0}
     for i in range(n):
-        win = dealer_hilo(PlayerType.LOWEST, PlayerType.HIGHEST, False)
+        win = dealer_hilo(PlayerType.RANDOM, PlayerType.COUNTER, False)
         win_count[win] += 1
     print(win_count)
 

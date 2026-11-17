@@ -2,7 +2,7 @@ import random
 
 from card_consts import MAX_VALUE, PlayerType
 from decks import full_standard_deck, select_card
-from types_cardgame import Player
+from types_cardgame import Deck, Player
 from ui_basic import hand_menu, hilo_bet_menu
 
 # Constants for hi-low vs. dealer
@@ -10,16 +10,20 @@ from ui_basic import hand_menu, hilo_bet_menu
 TURN_AMOUNT = 5
 
 
-def set_bet_by_value(value, midpoint: float = (MAX_VALUE+1)/2) -> bool:
+def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
     if float(value) == midpoint:
         return bool(random.getrandbits(1))  # If we're exactly halfway, bet randomly
     else:
         return value > midpoint
 
 
+def rest_of_deck_avg(player: Player):
+    rest_of_deck = full_standard_deck() - player.seen
+    return rest_of_deck.get_average_value()
+
 # Make a move based on playertype
 def make_move(player: Player):
-    #avg_value = full_standard_deck().get_average_value()
+    # avg_value = full_standard_deck().get_average_value()
     match player.type:
         case PlayerType.HUMAN:
             card = select_card(player.hand, hand_menu(player))
@@ -35,7 +39,7 @@ def make_move(player: Player):
             bet = set_bet_by_value(card.get_value())
         case PlayerType.COUNTER:
             card = select_card(player.hand, player.hand.pull_random())
-            bet = set_bet_by_value(card.get_value())
+            bet = set_bet_by_value(card.get_value(), rest_of_deck_avg(player))
         case _:
             raise ValueError("Unknown player type!")
     return card, bet
@@ -75,6 +79,11 @@ def dealer_hilo(P1Type, P2Type, verbose: bool = True):
             wintext += f"{player2.name} scores! "
         if wintext == "":
             wintext = "No points"
+
+        player1.seen.append(p2card)
+        player2.seen.append(p1card)
+        player1.seen.append(dealer_card)
+        player2.seen.append(dealer_card)
 
         move_count += 1
         if verbose:

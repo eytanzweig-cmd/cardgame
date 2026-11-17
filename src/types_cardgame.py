@@ -97,12 +97,28 @@ class Deck(list):
     def __setitem__(self, index, item):
         super().__setitem__(index, self._validate_card(item))
 
+    def __contains__(self, other):
+        return any(other == item and other.suite == item.suite for item in self)
+
     def __str__(self):
         if len(self) <=0:
             return "empty"
         return ", ".join(map(str, self))
 
+    def __add__(self, other): #Deck subtraction
+        if isinstance(other, Card):
+            return self + Deck([other])
+        elif not isinstance(other, type(self)):
+            raise TypeError(f"deck or card expected, got {type(other).__name__}")
+        temp_deck = copy.deepcopy(Deck(self))
+        temp_deck.extend(other)
+        return temp_deck
+
     def __sub__(self, other): #Deck subtraction
+        if isinstance(other, Card):
+            return self - Deck([other])
+        elif not isinstance(other, type(self)):
+            raise TypeError(f"deck or card expected, got {type(other).__name__}")
         return Deck(filter(lambda x: x not in other, self))
 
     def peek(self, amount=1):

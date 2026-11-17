@@ -35,9 +35,16 @@ def make_move(player: Player):
         case PlayerType.LOWEST:
             card = select_card(player.hand, player.hand.index(min(player.hand)))
             bet = set_bet_by_value(card.get_value())
-        case PlayerType.COUNTER:
-            card = select_card(player.hand, player.hand.pull_random())
-            bet = set_bet_by_value(card.get_value(), rest_of_deck_avg(player))
+        case PlayerType.SMART:
+            avg = rest_of_deck_avg(player)
+            hi = max(player.hand).rank
+            lo = min(player.hand).rank
+            if (hi-avg) > (avg-lo):
+                pick = max(player.hand)
+            else:
+                pick = min(player.hand)
+            card = select_card(player.hand, player.hand.index(pick))
+            bet = set_bet_by_value(card.get_value(), avg)
         case _:
             raise ValueError("Unknown player type!")
     return card, bet

@@ -8,7 +8,7 @@ class PlayerType(Enum):
     RANDOM = 1
     HIGHEST = 2
     LOWEST = 3
-    COUNTER = 4
+    SMART = 4
 
 class Suite(Enum):
     CLUB = 0

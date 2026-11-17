@@ -105,7 +105,7 @@ class Deck(list):
             return "empty"
         return ", ".join(map(str, self))
 
-    def __add__(self, other): #Deck subtraction
+    def __add__(self, other): #Deck addition
         if isinstance(other, Card):
             return self + Deck([other])
         elif not isinstance(other, type(self)):

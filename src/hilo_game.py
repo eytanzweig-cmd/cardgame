@@ -7,9 +7,6 @@ from ui_basic import hand_menu, hilo_bet_menu
 
 # Constants for hi-low vs. dealer
 
-TURN_AMOUNT = 5
-
-
 def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
     if float(value) == midpoint:
         return bool(random.getrandbits(1))  # If we're exactly halfway, bet randomly
@@ -17,6 +14,7 @@ def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
         return value > midpoint
 
 
+# This is inefficient, improve it
 def rest_of_deck_avg(player: Player):
     rest_of_deck = full_standard_deck() - player.seen
     return rest_of_deck.get_average_value()
@@ -45,7 +43,7 @@ def make_move(player: Player):
     return card, bet
 
 
-def dealer_hilo(P1Type, P2Type, verbose: bool = True):
+def dealer_hilo(turn_amount : int , P1Type, P2Type, verbose: bool = True):
     player1 = Player("P1", P1Type)
     player2 = Player("P2", P2Type)
     dealer_deck = full_standard_deck()
@@ -56,7 +54,7 @@ def dealer_hilo(P1Type, P2Type, verbose: bool = True):
         print(player1)
         print(player2)
     move_count = 0
-    while move_count < TURN_AMOUNT:
+    while move_count < turn_amount:
         if (
             player1.get_card_count() == 0
             or player2.get_card_count() == 0

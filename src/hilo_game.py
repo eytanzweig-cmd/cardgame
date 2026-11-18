@@ -1,11 +1,12 @@
 import random
 
-from card_consts import MAX_VALUE, PlayerType
+from card_consts import MAX_VALUE, OutputType, PlayerType
 from decks import full_standard_deck, select_card
 from types_cardgame import Player
 from ui_basic import hand_menu, hilo_bet_menu
 
 # Constants for hi-low vs. dealer
+
 
 def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
     if float(value) == midpoint:
@@ -18,6 +19,7 @@ def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
 def rest_of_deck_avg(player: Player):
     rest_of_deck = full_standard_deck() - player.seen
     return rest_of_deck.get_average_value()
+
 
 # Make a move based on playertype
 def make_move(player: Player):
@@ -39,7 +41,7 @@ def make_move(player: Player):
             avg = rest_of_deck_avg(player)
             hi = max(player.hand).rank
             lo = min(player.hand).rank
-            if (hi-avg) > (avg-lo):
+            if (hi - avg) > (avg - lo):
                 pick = max(player.hand)
             else:
                 pick = min(player.hand)
@@ -50,14 +52,16 @@ def make_move(player: Player):
     return card, bet
 
 
-def dealer_hilo(turn_amount : int , P1Type, P2Type, verbose: bool = True):
+def dealer_hilo(
+    turn_amount: int, P1Type, P2Type, output: OutputType = OutputType.NORMAL
+):
     player1 = Player("P1", P1Type)
     player2 = Player("P2", P2Type)
     dealer_deck = full_standard_deck()
     dealer_deck.shuffle()
     dealer_deck.deal(player1, 5)
     dealer_deck.deal(player2, 5)
-    if verbose:
+    if output == OutputType.VERBOSE:
         print(player1)
         print(player2)
     move_count = 0
@@ -91,23 +95,23 @@ def dealer_hilo(turn_amount : int , P1Type, P2Type, verbose: bool = True):
         player2.seen.append(dealer_card)
 
         move_count += 1
-        if verbose:
+        if output != OutputType.SILENT:
             print(
                 f"{move_count}: Dealer: {dealer_card}, {player1.name}: {p1card}, bet {'high' if p1bet else 'low'}, {player2.name}: {p2card}, bet {'high' if p2bet else 'low'} - {wintext}"
             )
-    if verbose:
+    if output != OutputType.SILENT:
         print(f"{player1.name} - final score: {player1.score}")
         print(f"{player2.name} - final score: {player2.score}")
 
     if player1.score > player2.score:
-        if verbose:
+        if output != OutputType.SILENT:
             print(f"{player1.name} wins!")
         return 1
     elif player2.score > player1.score:
-        if verbose:
+        if output != OutputType.SILENT:
             print(f"{player2.name} wins!")
         return 2
     else:
-        if verbose:
+        if output != OutputType.SILENT:
             print("Tie!")
         return 0

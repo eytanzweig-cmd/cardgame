@@ -61,8 +61,9 @@ def dealer_hilo(
     dealer_deck.shuffle()
     dealer_deck.deal(player1, 5)
     dealer_deck.deal(player2, 5)
-    if output == OutputType.VERBOSE:
+    if player1.type == PlayerType.HUMAN or output == OutputType.VERBOSE:
         print(player1)
+    if player2.type == PlayerType.HUMAN or output == OutputType.VERBOSE:
         print(player2)
     move_count = 0
     while move_count < turn_amount:

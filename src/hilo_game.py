@@ -1,3 +1,4 @@
+import copy
 import random
 
 from card_consts import MAX_VALUE, OutputType, PlayerType
@@ -5,9 +6,11 @@ from decks import full_standard_deck, select_card
 from types_cardgame import Player
 from ui_basic import hand_menu, hilo_bet_menu
 
-# Constants for hi-low vs. dealer
+# Constants for High/low game
 
+STARTING_HAND_SIZE = 5
 
+# Return a bet as to whether a particular chosen value is high (true) or low (false)
 def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
     if float(value) == midpoint:
         return bool(random.getrandbits(1))  # If we're exactly halfway, bet randomly
@@ -15,6 +18,7 @@ def set_bet_by_value(value, midpoint: float = (MAX_VALUE + 1) / 2) -> bool:
         return value > midpoint
 
 
+# Calculate the average value of all the cards in a standard deck that the player hasn't seen
 # This is inefficient, improve it
 def rest_of_deck_avg(player: Player):
     rest_of_deck = full_standard_deck() - player.seen
@@ -59,27 +63,30 @@ def dealer_hilo(
     player2 = Player("P2", P2Type)
     dealer_deck = full_standard_deck()
     dealer_deck.shuffle()
-    dealer_deck.deal(player1, 5)
-    dealer_deck.deal(player2, 5)
+    dealer_deck.deal(player1, STARTING_HAND_SIZE)
+    dealer_deck.deal(player2, STARTING_HAND_SIZE)
     if player1.type == PlayerType.HUMAN or output == OutputType.VERBOSE:
         print(player1)
     if player2.type == PlayerType.HUMAN or output == OutputType.VERBOSE:
         print(player2)
     move_count = 0
     while move_count < turn_amount:
-        if (
-            player1.get_card_count() == 0
-            or player2.get_card_count() == 0
-            or len(dealer_deck) == 0
-        ):
-            raise ValueError("Out of cards!")
+        if len(dealer_deck) <= 2: # Dealer needs 3 cards per turn
+            if output != OutputType.SILENT:
+                print("Dealer low on cards, picks up discarded cards!")
+            dealer_deck = full_standard_deck() # Reset dealer deck
+            dealer_deck -= player1.hand # Take out the cards player 1 has
+            dealer_deck -= player2.hand # Take out the cards player 2 has
+            if output == OutputType.VERBOSE:
+                print(dealer_deck)
+            dealer_deck.shuffle()
+            player1.seen = copy.deepcopy(player1.hand) # And both players should reset their memories
+            player2.seen = copy.deepcopy(player2.hand)
         dealer_card = select_card(dealer_deck, 0)
         (p1card, p1bet) = make_move(player1)
-        if len(dealer_deck) > 1:
-            dealer_deck.deal(player1, 1)
+        dealer_deck.deal(player1, 1)
         (p2card, p2bet) = make_move(player2)
-        if len(dealer_deck) > 0:
-            dealer_deck.deal(player2, 1)
+        dealer_deck.deal(player2, 1)
         wintext = ""
         if (p1bet and p1card > dealer_card) or (not p1bet and p1card < dealer_card):
             player1.score += 1

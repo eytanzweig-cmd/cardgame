@@ -12,8 +12,8 @@ def run_n(n):
 
 
 def main():
-    # dealer_hilo(5, PlayerType.HUMAN, PlayerType.SMART, OutputType.NORMAL)
-    run_n(10000)
+    dealer_hilo(5, PlayerType.HUMAN, PlayerType.SMART, OutputType.NORMAL)
+    # run_n(10000)
 
 
 if __name__ == "__main__":
